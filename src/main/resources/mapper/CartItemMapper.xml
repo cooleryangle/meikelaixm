@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meikelai.mapper.CartItemMapper">
+    <insert id="insert" parameterType="com.meikelai.entity.CartItem">
+        INSERT INTO Cart_item (cartId, dishId, quantity)
+        VALUES (#{cartId}, #{dishId}, #{quantity})
+    </insert>
+
+    <!-- 更新购物车项 -->
+    <update id="updateById" parameterType="com.meikelai.entity.CartItem">
+        UPDATE Cart_item
+        SET cartId = #{cartId}, dishId = #{dishId}, quantity = #{quantity}
+        WHERE cartItemId = #{itemId}
+    </update>
+</mapper>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meikelai.mapper.CartMapper">
+
+
+    <insert id="insert" parameterType="com.meikelai.entity.Cart" useGeneratedKeys="true" keyProperty="cartId">
+        INSERT INTO Cart (userId) VALUES (#{userId})
+    </insert>
+    <resultMap id="cartResultMap" type="com.meikelai.entity.Cart">
+        <id property="cartId" column="cartId"/>
+        <result property="userId" column="userId"/>
+        <collection property="cartItems" ofType="com.meikelai.entity.CartItem">
+            <id property="cartItemId" column="cartItemId"/>
+            <result property="quantity" column="quantity"/>
+            <association property="dish" javaType="com.meikelai.entity.Dish">
+                <id property="dishId" column="dishId"/>
+                <result property="name" column="name"/>
+                <result property="description" column="description"/>
+                <result property="price" column="price"/>
+                <result property="imageUrl" column="imageUrl"/>
+            </association>
+        </collection>
+    </resultMap>
+
+
+    <select id="selectCartInfoByUserId" resultMap="cartResultMap">
+        SELECT
+            c.cartId,
+            c.userId,
+            ci.cartItemId,
+            ci.quantity,
+            d.dishId,
+            d.name,
+            d.description,
+            d.price,
+            d.imageUrl
+        FROM
+            Cart c
+                JOIN
+            Cart_item ci ON c.cartId = ci.cartId
+                JOIN
+            Dish d ON ci.dishId = d.dishId
+        WHERE
+            c.userId = #{userId}
+    </select>
+
+
+
+    <insert id="insertOrder" parameterType="com.meikelai.entity.Order" useGeneratedKeys="true" keyProperty="orderId">
+        INSERT INTO `Order` (userId, totalAmount, createdAt, status)
+        VALUES (#{userId}, #{totalAmount}, #{createdAt}, #{status})
+        <!-- Other attributes -->
+    </insert>
+    <!-- 插入订单详情的 SQL -->
+    <insert id="insertOrderDetails" parameterType="map">
+        INSERT INTO OrderDetail (orderId, dishId, quantity, price)
+        VALUES
+        <foreach collection="details" item="detail" separator=",">
+            (#{order.orderId}, #{detail.dishId}, #{detail.quantity}, #{detail.price})
+        </foreach>
+    </insert>
+</mapper>

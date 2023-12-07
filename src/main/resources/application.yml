@@ -1,0 +1,36 @@
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/meikelai?useSSL=false&serverTimezone=UTC
+    username: root
+    password: 123456
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+server:
+  port: 8081
+mybatis:
+  mapper-locations: classpath:/mapper/*.xml
+  type-aliases-package: com.meikelai.entity
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+file:
+  storage:
+    location: file-storage
+wechat:
+  appId: wxf9ce50fdc6c5cd49
+  appSecret: 0d550e761ddc83f3565c2f7b15aa3518
+
+
+
+
+
+
+
+
+
+
+
